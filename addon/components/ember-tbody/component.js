@@ -2,6 +2,7 @@ import Component from '@ember/component';
 
 import { computed, observer } from '@ember/object';
 import { bool, readOnly, or } from '@ember/object/computed';
+import { next } from '@ember/runloop';
 
 import { SUPPORTS_INVERSE_BLOCK } from 'ember-compatibility-helpers';
 
@@ -259,6 +260,12 @@ export default Component.extend({
       !!this.get('unwrappedApi.columnTree')
     );
   },
+
+  _updateColumnTree: observer('wrappedRows.[]', function() {
+    next(() => {
+      this.get('unwrappedApi.columnTree').ensureWidthConstraint();
+    });
+  }),
 
   // eslint-disable-next-line
   _updateCollapseTree: observer(

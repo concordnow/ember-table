@@ -12,7 +12,7 @@ import { scheduler, Token } from 'ember-raf-scheduler';
 import { getOrCreate } from './meta-cache';
 import { objectAt, move, splice } from './utils/array';
 import { mergeSort } from './utils/sort';
-import { getScale, getOuterClientRect, getInnerClientRect } from './utils/element';
+import { getScale, getOuterClientRect, getInnerClientRect, getScrollbarWidth } from './utils/element';
 import { MainIndicator, DropIndicator } from './utils/reorder-indicators';
 import { notifyPropertyChange } from './utils/ember';
 import { assert } from '@ember/debug';
@@ -630,8 +630,10 @@ export default EmberObject.extend({
     }
 
     let containerWidthAdjustment = get(this, 'containerWidthAdjustment') || 0;
+    let containerScrollbarWidth = getScrollbarWidth(this.container);
+    let containerInnerWidth = getInnerClientRect(this.container).width;
     let containerWidth =
-      getInnerClientRect(this.container).width * this.scale + containerWidthAdjustment;
+      (containerInnerWidth - containerScrollbarWidth) * Number(Math.round(this.scale+'e2')+'e-2') + containerWidthAdjustment;
     let treeWidth = get(this, 'root.width');
     let columns = get(this, 'root.subcolumnNodes');
 
