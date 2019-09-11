@@ -40,6 +40,10 @@ export function getScale(element) {
   }
 }
 
+export function getScrollbarWidth(element) {
+  return element.offsetWidth - element.clientWidth; // 0 if no scrollbar
+}
+
 export function getInnerClientRect(element) {
   let scale = getScale(element);
   let outerClientRect = element.getBoundingClientRect();
