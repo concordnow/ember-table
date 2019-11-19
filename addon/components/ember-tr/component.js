@@ -80,6 +80,8 @@ export default Component.extend({
 
   rowSelectionMode: readOnly('api.rowSelectionMode'),
 
+  clickableParentElementTags: readOnly('api.clickableParentElementTags'),
+
   isHeader: readOnly('api.isHeader'),
 
   isSelected: readOnly('rowMeta.isSelected'),
@@ -94,7 +96,14 @@ export default Component.extend({
 
   click(event) {
     let rowSelectionMode = this.get('rowSelectionMode');
-    let inputParent = closest(event.target, 'input, button, label, a, select');
+
+    let clickableParentElementTags = this.get('clickableParentElementTags');
+    let isParentElementTagsString = typeof clickableParentElementTags === 'string';
+    let possibleParentElementTags = isParentElementTagsString
+      ? clickableParentElementTags
+      : 'input, button, label, a, select';
+
+    let inputParent = closest(event.target, possibleParentElementTags);
 
     if (!inputParent) {
       let rowMeta = this.get('rowMeta');

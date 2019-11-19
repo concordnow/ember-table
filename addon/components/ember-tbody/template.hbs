@@ -25,6 +25,7 @@
     canSelect=canSelect
     rowSelectionMode=rowSelectionMode
     checkboxSelectionMode=checkboxSelectionMode
+    clickableParentElementTags=clickableParentElementTags
 
     as |api|
   }}
@@ -34,6 +35,7 @@
         rowMeta=api.rowMeta
         cells=api.cells
         rowSelectionMode=api.rowSelectionMode
+        clickableParentElementTags=api.clickableParentElementTags
 
         row=(component "ember-tr" api=api)
       )}}

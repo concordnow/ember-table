@@ -88,6 +88,14 @@ export default Component.extend({
   selectingChildrenSelectsParent: defaultTo(true),
 
   /**
+    The stringified list of HTML tags to be able to click on instead of selecting the row.
+
+    @argument clickableParentElementTags
+    @type string? ('input, button, label, a, select')
+  */
+  clickableParentElementTags: defaultTo('input, button, label, a, select'),
+
+  /**
     The currently selected rows. Can either be an array or an individual row.
 
     @argument selection

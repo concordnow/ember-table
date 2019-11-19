@@ -19,6 +19,9 @@ export function closest(el, selector) {
   if (ELEMENT_MATCH_FN === undefined) {
     setElementMatchFn(el);
   }
+  if (selector === '') {
+    return null;
+  }
   while (el) {
     // TODO add explicit test
     if (el[ELEMENT_MATCH_FN](selector)) {
