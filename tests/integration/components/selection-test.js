@@ -7,7 +7,8 @@ import { generateTable } from '../../helpers/generate-table';
 import { generateRows } from 'dummy/utils/generators';
 import { A as emberA } from '@ember/array';
 import { run } from '@ember/runloop';
-import { scrollTo } from 'ember-native-dom-helpers';
+import { htmlSafe } from '@ember/template';
+import { click, scrollTo } from 'ember-native-dom-helpers';
 import { registerTestWarnHandler } from '../../helpers/warn-handlers';
 
 let table = new TablePage({
@@ -500,6 +501,72 @@ module('Integration | selection', () => {
       await table.selectRangeFromClick(1, 3);
 
       assert.ok(table.validateSelected(1, 2, 3), 'only children are selected');
+    });
+  });
+
+  module('clickableParentElementTags', function() {
+    componentModule('button', function() {
+      test('Can select a row by clicking on it when not clickable', async function(assert) {
+        await generateTable(this, {
+          rows: generateRows(10, 1, (row, key) =>
+            htmlSafe(`<button data-test-body-row-cell="${key}">${row.id}${key}</button>`)
+          ),
+          clickableParentElementTags: '',
+        });
+
+        assert.ok(table.validateSelected(), 'the row is not marked as selected on initialization');
+
+        click('button[data-test-body-row-cell]');
+
+        assert.ok(table.validateSelected(0), 'the row is selected after being clicked');
+      });
+
+      test('Cannot select a row by clicking on it when clickable', async function(assert) {
+        await generateTable(this, {
+          rows: generateRows(10, 1, (row, key) =>
+            htmlSafe(`<button data-test-body-row-cell="${key}">${row.id}${key}</button>`)
+          ),
+          clickableParentElementTags: 'button',
+        });
+
+        assert.ok(table.validateSelected(), 'the row is not marked as selected on initialization');
+
+        click('button[data-test-body-row-cell]');
+
+        assert.ok(table.validateSelected(), 'the row is selected after being clicked');
+      });
+    });
+
+    componentModule('input, button, label, a, select', function() {
+      test('Can select a row by clicking on it when not clickable', async function(assert) {
+        await generateTable(this, {
+          rows: generateRows(10, 1, (row, key) =>
+            htmlSafe(`<p data-test-body-row-cell="${key}">${row.id}${key}</p>`)
+          ),
+          clickableParentElementTags: 'input, button, label, a, select',
+        });
+
+        assert.ok(table.validateSelected(), 'the row is not marked as selected on initialization');
+
+        click('p[data-test-body-row-cell]');
+
+        assert.ok(table.validateSelected(0), 'the row is selected after being clicked');
+      });
+
+      test('Cannot select a row by clicking on it when clickable', async function(assert) {
+        await generateTable(this, {
+          rows: generateRows(10, 1, (row, key) =>
+            htmlSafe(`<a data-test-body-row-cell="${key}">${row.id}${key}</a>`)
+          ),
+          clickableParentElementTags: 'input, button, label, a, select',
+        });
+
+        assert.ok(table.validateSelected(), 'the row is not marked as selected on initialization');
+
+        click('a[data-test-body-row-cell]');
+
+        assert.ok(table.validateSelected(), 'the row is selected after being clicked');
+      });
     });
   });
 
