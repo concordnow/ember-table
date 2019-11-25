@@ -30,6 +30,7 @@ export default Component.extend({
 
   canSelect: undefined,
   checkboxSelectionMode: undefined,
+  clickableParentElementTags: undefined,
   columnMetaCache: undefined,
   columns: undefined,
   rowMetaCache: undefined,
@@ -48,15 +49,24 @@ export default Component.extend({
     this._super(...arguments);
   },
 
-  api: computed('rowValue', 'rowMeta', 'cells', 'canSelect', 'rowSelectionMode', function() {
-    let rowValue = this.get('rowValue');
-    let rowMeta = this.get('rowMeta');
-    let cells = this.get('cells');
-    let canSelect = this.get('canSelect');
-    let rowSelectionMode = canSelect ? this.get('rowSelectionMode') : 'none';
+  api: computed(
+    'rowValue',
+    'rowMeta',
+    'cells',
+    'canSelect',
+    'rowSelectionMode',
+    'clickableParentElementTags',
+    function() {
+      let rowValue = this.get('rowValue');
+      let rowMeta = this.get('rowMeta');
+      let cells = this.get('cells');
+      let canSelect = this.get('canSelect');
+      let rowSelectionMode = canSelect ? this.get('rowSelectionMode') : 'none';
+      let clickableParentElementTags = this.get('clickableParentElementTags');
 
-    return { rowValue, rowMeta, cells, rowSelectionMode };
-  }),
+      return { rowValue, rowMeta, cells, rowSelectionMode, clickableParentElementTags };
+    }
+  ),
 
   rowMeta: computed('rowValue', function() {
     let rowValue = this.get('rowValue');

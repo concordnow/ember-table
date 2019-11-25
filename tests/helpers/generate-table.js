@@ -60,6 +60,7 @@ const fullTable = hbs`
         selectingChildrenSelectsParent=selectingChildrenSelectsParent
         checkboxSelectionMode=checkboxSelectionMode
         rowSelectionMode=rowSelectionMode
+        clickableParentElementTags=clickableParentElementTags
         selection=selection
 
         as |b|
