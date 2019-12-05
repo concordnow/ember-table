@@ -79,7 +79,7 @@ export default Component.extend({
   /**
     When true, this option enables the toggling of rows without using the ctrlKey or metaKey.
 
-    @argument rowSelectionMode
+    @argument rowToggleMode
     @type boolean
   */
   rowToggleMode: defaultTo(false),
