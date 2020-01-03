@@ -95,11 +95,12 @@ export default Component.extend({
   }),
 
   click(event) {
-    let rowSelectionMode = this.get('rowSelectionMode');
+    let isSelectable = this.get('isSelectable');
     let inputParent = closest(event.target, 'input, button, label, a, select');
 
-    if (!inputParent) {
+    if (!inputParent && isSelectable) {
       let rowMeta = this.get('rowMeta');
+      let rowSelectionMode = this.get('rowSelectionMode');
 
       if (rowMeta && rowSelectionMode === SELECT_MODE.MULTIPLE) {
         let toggle = event.ctrlKey || event.metaKey || this.get('rowToggleMode');
